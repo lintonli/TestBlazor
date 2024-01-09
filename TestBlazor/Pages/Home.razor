@@ -1,0 +1,76 @@
+﻿@page "/"
+<div class="container" style="display:flex">
+    <div class="col-4">
+        <AddMemoryForm @ref="addMemoryForm" OnAddMemory="AddMemory"></AddMemoryForm>
+    </div>
+
+    <div class="memories">
+        <div class="col -8">
+            @if (memories.Count == 0)
+            {
+                <p>No memories found.</p>
+            }
+            else
+            {
+                @foreach (var memory in memories)
+                {
+                    <SingleMemory memory="memory" onDelete="Delete" onEdit="Edit"></SingleMemory>
+
+
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public AddMemoryForm addMemoryForm { get; set; }
+    public List<Memory> memories { get; set; } = new List<Memory>()
+    {
+        new Memory()
+        {
+            Id =1,
+            Name ="Adventure",
+            Description= "FriendsCircle",
+            Date=DateTime.Now,
+            Location="Karura"
+        },
+        new Memory()
+        {
+            Id =1,
+            Name ="Birthday",
+            Description= "My Birthday Party",
+             Date=DateTime.Now,
+            Location="Karura"
+        }
+    };
+
+    public void AddMemory(Memory newMemory)
+    {
+        var mem = memories.Find(x => x.Id == newMemory.Id);
+
+        if (mem == null)
+        {
+            newMemory.Id = memories.Count + 1;
+            memories.Add(newMemory);
+
+        }
+        else
+        {
+            mem.Name = newMemory.Name;
+            mem.Description=newMemory.Description;
+            mem.Date = newMemory.Date;
+            mem.Location = newMemory.Location;
+        }
+        addMemoryForm.ClearInputs();
+    }
+    public void Delete(Memory memory)
+    {
+        memories.Remove(memory);
+    }
+    public void Edit(Memory memory)
+    {
+        addMemoryForm.Edit(memory);
+    }
+}

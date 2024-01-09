@@ -1,0 +1,52 @@
+﻿<h3>Addmemory</h3>
+<div class="row">
+    <h1>@(IsEdit?"Edit Memory":"Add Memory")</h1>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" @bind-value="memory.Name" id="Name" placeholder="Memory Name">
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <input type="text" class="form-control" @bind-value="memory.Description" id="Description" placeholder="Memory Description">
+    </div>
+
+    <div class="form-group">
+        <label for="Date">Date</label>
+        <input type="date" class="form-control" @bind-value="memory.Date" id="Image" placeholder="Memory Date">
+    </div>
+
+    <div class="form-group">
+        <label for="Location">Location</label>
+        <input type="text" class="form-control" @bind-value="memory.Location" id="Location" placeholder="Memory Location">
+    </div>
+
+    <button type="button" @onclick="AddNewMemory" class="mt-4 btn btn-primary">@(IsEdit?"Edit Memory":"Add Memory")</button>
+</div>
+
+@code {
+
+    public Memory memory { get; set; } = new Memory();
+    public bool IsEdit { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<Memory> OnAddMemory { get; set; }
+
+    public async Task AddNewMemory()
+    {
+        await OnAddMemory.InvokeAsync(memory);    
+    }
+    public void ClearInputs()
+    {
+        memory = new Memory();
+        IsEdit = false;
+    }
+
+    public void Edit(Memory memo)
+    {
+        memory = memo;
+        IsEdit = true;
+    }
+
+
+}

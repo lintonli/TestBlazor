@@ -1,0 +1,39 @@
+﻿<div class="card shadow col-8 " style="width: 18rem;">
+
+    <div class="card-body">
+        <h5 class="card-title">@memory.Name</h5>
+
+        <div class="d-flex justify-content-between">
+            <span>
+                @memory.Description
+            </span>
+            <span>
+                @memory.Date
+            </span>
+            <span>
+                @memory.Location
+            </span>
+        </div>
+        <button type="button" @onclick="Delete" class="mt-4 btn btn-primary">Delete</button>
+        <button type="button" @onclick="Edit" class="mt-4 btn btn-primary">Edit</button>
+
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Memory memory { get; set; } = new Memory();
+
+    [Parameter]
+    public EventCallback<Memory> onDelete {get; set;}
+    public async Task Delete()
+    {
+        await onDelete.InvokeAsync(memory);
+    }
+    [Parameter]
+    public EventCallback<Memory> onEdit{ get; set; }
+    public async Task Edit()
+    {
+        await onEdit.InvokeAsync(memory);
+    }
+}
